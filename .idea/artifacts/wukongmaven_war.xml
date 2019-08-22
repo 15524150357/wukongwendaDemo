@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="wukongmaven:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="wukongmaven.war">
+      <element id="artifact" artifact-name="wukongmaven:war exploded" />
+    </root>
+  </artifact>
+</component>

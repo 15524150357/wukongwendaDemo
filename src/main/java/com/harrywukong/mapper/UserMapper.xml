@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.harrywukong.mapper.UserMapper">
+    <insert id="addUser" parameterType="Userinfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into userinfo(username,password,picpath) values(#{username},#{password},#{picpath})
+    </insert>
+
+    <select id="userLogin" parameterType="Userinfo" resultType="Userinfo">
+        select * from userinfo where username=#{username} and password=#{password}
+    </select>
+
+    <delete id="deleteUserByID" parameterType="int">
+        delete from userinfo where id = #{value}
+    </delete>
+
+    <select id="showUsers" resultType="Userinfo">
+        select * from userinfo
+    </select>
+
+    <select id="getUserInfoByID" parameterType="int" resultType="Userinfo">
+        select * from userinfo where id=#{value}
+    </select>
+
+    <update id="editUser" parameterType="Userinfo">
+        update userinfo set username=#{username},password=#{password} where id=#{id}
+    </update>
+
+    <update id="saveUser" parameterType="Userinfo">
+        update userinfo set username = #{username},picpath = #{picpath} where id = #{id}
+    </update>
+
+    <!--<select id="getPagedUsers" parameterType="Pageinfo" resultType="Userinfo">-->
+         <!--select * from userinfo limit #{pageStart},#{pageSize}-->
+    <!--</select>-->
+
+    <select id="getUserCount" resultType="int">
+        select count(*) as num from userinfo
+    </select>
+
+    <select id="isUserExist" parameterType="Userinfo" resultType="int">
+        select count(*) as num from userinfo where username = #{username}
+    </select>
+
+</mapper>

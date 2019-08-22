@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.harrywukong.mapper.QuestionMapper">
+    <select id="getAllQuestions" resultType="map">
+        select * from questioninfo LEFT JOIN userinfo ON userid = id order by qid desc
+    </select>
+
+    <insert id="addAnswer" parameterType="AnswerinfoExtend">
+        <selectKey keyProperty="ansid" order="AFTER" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into answerinfo(content,userid,questionid) values(#{content},#{userid},#{questionid})
+    </insert>
+
+    <select id="getAnswersByQuestionID" parameterType= "int" resultType="map">
+        SELECT * FROM answerinfo JOIN userinfo ON id = userid WHERE questionid=#{value}
+    </select>
+
+    <select id="getQuestionByQid" parameterType= "int" resultType="QuestioninfoExtend">
+        select * from questioninfo where qid=#{value}
+    </select>
+
+    <select id="checkAllQuestions" resultType="QuestioninfoExtend">
+        select * from questioninfo
+    </select>
+
+    <delete id="delQuestionByQid" parameterType="int">
+        delete from questioninfo where qid = #{value}
+    </delete>
+
+    <select id="checkFavoritesByUid" parameterType="Userinfo" resultType="map">
+        SELECT * FROM favoriteinfo JOIN questioninfo ON favoriteinfo.qid = questioninfo.qid WHERE uid = #{id}
+    </select>
+
+    <insert id="addAsFavorite" parameterType="FavoriteinfoExtend">
+        <selectKey keyProperty="fid" order="AFTER" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        INSERT INTO favoriteinfo(qid,uid) VALUES(#{qid},#{uid})
+    </insert>
+
+    <insert id="addQuestion" parameterType="QuestioninfoExtend">
+        <selectKey keyProperty="qid" order="AFTER" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into questioninfo(title,content,userid) values(#{title},#{content},#{userid})
+    </insert>
+</mapper>

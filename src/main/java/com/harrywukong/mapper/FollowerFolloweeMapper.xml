@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.harrywukong.mapper.FollowerFolloweeMapper">
+    <select id="getAllFansByStarID" parameterType="Userinfo" resultType="map">
+        SELECT * from userinfo JOIN follower_followee_info ON fansid=userinfo.id where starid=#{id}
+    </select>
+
+    <insert id="addAsMyStar" parameterType="FollowerFolloweeInfo">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select last_insert_id()
+        </selectKey>
+        insert into follower_followee_info(fansid,starid) values(#{fansid},#{starid})
+    </insert>
+
+    <select id="getFansNumByUserID" parameterType="Userinfo" resultType="int">
+        SELECT count(*) as num FROM follower_followee_info WHERE starid = #{id}
+    </select>
+
+    <select id="getStarNumByUserID" parameterType="Userinfo" resultType="int">
+        SELECT count(*) as num FROM follower_followee_info WHERE fansid = #{id}
+    </select>
+
+    <select id="getAllStarsByFansID" parameterType="Userinfo" resultType="map">
+        SELECT * from userinfo JOIN follower_followee_info ON starid=userinfo.id where fansid=#{id}
+    </select>
+
+</mapper>
